@@ -47,7 +47,7 @@
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
 
     <dependency>
@@ -87,7 +87,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
     </plugins>
-    <directory>${project.basedir}/backend/target</directory>
+    <directory>${project.basedir}/target</directory>
   </build>
 
   <repositories>
