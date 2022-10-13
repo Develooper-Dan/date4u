@@ -4,20 +4,15 @@ import CredentialsProvider from "next-auth/providers/credentials"
 export const authOptions = {
   providers: [
   CredentialsProvider({
-   name: "email",
-/*   credentials: {
-    email: {label: "Email", type: "text", placeholder: "your@email.address"},
-    password: {label: "Password", type: "password",}
-   },*/
+   name: "credentials",
+
    async authorize(credentials, request) {
-     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
       method: "POST",
       body: JSON.stringify(credentials),
-      headers: { "Accept": "application/json"}
+      headers: { "Content-Type": "application/json"}
      })
      const user = await res.json();
-
-       console.log(user);
      if (res.ok && user) {
       return user
      }
@@ -25,6 +20,23 @@ export const authOptions = {
    }
   })
  ],
- pages: {signIn: '../../login',}
+    pages: {signIn: '../../login',},
+    callbacks: {
+        async jwt({ token, user }) {
+                /*console.log(user)*/
+                token.jwt = user.jwt;
+                token.id = user.id;
+/*            if (user) {
+                token.accessToken = account.access_token
+                token.id = profile.id
+            }*/
+            return token;
+        },
+        async session({ session, token, user }) {
+            session.user = user;
+            /*console.log(token.jwt)*/
+            return session
+        }
+    }
 }
 export default NextAuth(authOptions)

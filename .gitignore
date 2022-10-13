@@ -34,7 +34,7 @@ build/
 /spring-shell.log
 
 # dependencies
-/node_modules
+**/node_modules
 /.pnp
 .pnp.js
 
@@ -42,7 +42,7 @@ build/
 /coverage
 
 # next.js
-/.next/
+**/.next/
 /out/
 
 # production

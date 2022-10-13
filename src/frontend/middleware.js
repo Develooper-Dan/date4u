@@ -1,13 +1,11 @@
 import {NextResponse, NextRequest} from 'next/server';
+import {getSession} from "next-auth/react";
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request = NextRequest) {
-    console.log(request.cookies);
-    NextResponse.next().cookies
-    /*return NextResponse.redirect(new URL('/about-2', request.url));*/
-}
 
-// See "Matching Paths" below to learn more
-export const config = {
-    matcher: '/(.*)',
+export async function middleware(request = NextRequest) {
+    if (request.nextUrl.pathname !== "/login" && request.nextUrl.pathname !== "/register") {
+        const session = await getSession({ request });
+        if (!session) return NextResponse.redirect(`${request.nextUrl.origin}/login`);
+    }
+    return NextResponse.next();
 }

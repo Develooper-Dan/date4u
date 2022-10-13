@@ -1,15 +1,11 @@
 import Link from "next/link";
 import LoginLayout from "../components/loginlayout";
-import { getProviders, signIn} from "next-auth/react"
+import {signIn, useSession} from "next-auth/react"
 
-export async function getServerSideProps(context) {
-    console.log(context);
-    return {
-        props: {}
-    }
-}
+
 export default function Login(){
-
+    const { data: session, status } = useSession();
+    console.log(session);
         return (
             <LoginLayout>
                 <div className="bounds">
