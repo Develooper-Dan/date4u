@@ -6,13 +6,14 @@ export const authOptions = {
   CredentialsProvider({
    name: "credentials",
 
-   async authorize(credentials, request) {
+   async authorize(credentials) {
      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
       method: "POST",
       body: JSON.stringify(credentials),
       headers: { "Content-Type": "application/json"}
      })
      const user = await res.json();
+
      if (res.ok && user) {
       return user
      }
@@ -23,19 +24,22 @@ export const authOptions = {
     pages: {signIn: '../../login',},
     callbacks: {
         async jwt({ token, user }) {
-                /*console.log(user)*/
-                token.jwt = user.jwt;
-                token.id = user.id;
-/*            if (user) {
-                token.accessToken = account.access_token
-                token.id = profile.id
-            }*/
-            return token;
+            if(user){
+
+                token.accessToken = user.jwt;
+                token.user = user;
+                console.log(token)
+                return token;
+            }
+
         },
         async session({ session, token, user }) {
-            session.user = user;
-            /*console.log(token.jwt)*/
-            return session
+            if(token || user){
+                console.log("yay")
+                session.accessToken = token.accessToken
+                return session
+            }
+
         }
     }
 }

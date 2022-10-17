@@ -1,13 +1,12 @@
 import Link from "next/link";
-import LoginLayout from "../components/loginlayout";
+import Loginlayout from "../components/Loginlayout";
 import {signIn, useSession} from "next-auth/react"
 
 
 export default function Login(){
-    const { data: session, status } = useSession();
-    console.log(session);
+
         return (
-            <LoginLayout>
+            <Loginlayout>
                 <div className="bounds">
                     <div className="grid-33 centered">
                         <h1>Sign In</h1>
@@ -34,6 +33,6 @@ export default function Login(){
                         <p>Don't have a user account? <Link href='/signup'>Click here</Link> to sign up!</p>
                     </div>
                 </div>
-            </LoginLayout>
+            </Loginlayout>
         )
 }
