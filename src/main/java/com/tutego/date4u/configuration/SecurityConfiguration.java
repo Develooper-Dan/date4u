@@ -1,6 +1,7 @@
 package com.tutego.date4u.configuration;
 
 import com.tutego.date4u.jwt.JWTFilter;
+import com.tutego.date4u.services.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,11 +21,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    /*private JWTFilter filter*/;
-
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceConfiguration();
+        return new UserDetailsServiceImpl();
     }
     @Bean
     public AuthenticationManager authenticationManager(
@@ -37,6 +36,7 @@ public class SecurityConfiguration {
         authProvider.setUserDetailsService( userDetailsService() );
         return authProvider;
     }
+
     @Bean
     public SecurityFilterChain filterChain( HttpSecurity http, @Autowired JWTFilter filter ) throws Exception {
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

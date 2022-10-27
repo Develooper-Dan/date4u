@@ -1,6 +1,6 @@
 package com.tutego.date4u.core.profile;
 
-import com.tutego.date4u.profile.ProfileRepository;
+import com.tutego.date4u.repositories.ProfileRepository;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

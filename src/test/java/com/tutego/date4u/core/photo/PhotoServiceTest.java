@@ -1,7 +1,7 @@
 package com.tutego.date4u.core.photo;
 
 import com.tutego.date4u.core.FileSystem;
-import com.tutego.date4u.photo.PhotoService;
+import com.tutego.date4u.services.PhotoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

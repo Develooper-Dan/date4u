@@ -1,38 +1,62 @@
 import Link from "next/link";
 import Loginlayout from "../components/Loginlayout";
-import {signIn, useSession} from "next-auth/react"
+import { useForm } from "react-hook-form";
+import {useRouter} from "next/router";;
+import Cookies from 'js-cookie'
+import axios from "axios";
+import {useState} from "react";
+
 
 
 export default function Login(){
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [authError, setAuthError] = useState("");
+    const router = useRouter();
 
-        return (
-            <Loginlayout>
-                <div className="bounds">
-                    <div className="grid-33 centered">
-                        <h1>Sign In</h1>
-                        <div>
+    const login = async (credentials)=> {
+        axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, credentials,
+            {headers: {"Content-Type": "application/json"}})
+            .then(res => {
+                if (res.status < 400 && res.data) {
+                    Cookies.set("token", res.data.jwt, {path: "/"});
+                    router.push("/");
+                }
+            }).catch(err => {
+            if (err.response.status === 401) {
+                setAuthError("Invalid username or password")
+            } else {
+                setAuthError("An error occurred processing your data")
+            }
+        })
+    }
 
-                            <form onSubmit={(event) => {
-                                event.preventDefault();
-                                signIn("credentials", { email: event.target.email.value, password: event.target.password.value ,redirect: false}).then((res) => {console.log(res)})
-                            }}>
-                                <div>
-                                    <input id="email" name="email" type="text"
-                                           placeholder="Email Address"/>
-                                </div>
-                                <div>
-                                    <input id="password" name="password" type="password" placeholder="Password"/>
-                                </div>
-                                <div className="grid-100 pad-bottom">
-                                    <button className="button" type="submit">Sign In</button>
-                                    <button className="button button-secondary"> Cancel</button>
-                                </div>
-                            </form>
-                        </div>
-                        <p>&nbsp;</p>
-                        <p>Don't have a user account? <Link href='/signup'>Click here</Link> to sign up!</p>
-                    </div>
+    return (
+        <Loginlayout>
+                <div className="jumbotron mb-3">
+                    <h1 className="display-4">Sign in</h1>
                 </div>
-            </Loginlayout>
-        )
+                <div className="login-container mb-2">
+                    <form onSubmit={handleSubmit(login)} className="mb-2">
+                        <div className="mb-2">
+                            <input type="text" className="form-control"
+                                   placeholder="Yourfantasy@freeunico.rn"{...register("email", {required: "Email Address is required"})} />
+                            {errors.email && <p role="alert">{errors.email?.message}</p>}
+                        </div>
+                        <div className="mb-2">
+                            <input type="password" className="form-control"
+                                   placeholder="yoursecret123"{...register("password", {required: "Password is required"})} />
+                            {errors.password && <p role="alert">{errors.password?.message}</p>}
+                        </div>
+                        <div >
+                            { authError && <p role="alert">{authError}</p> }
+                        </div>
+                        <div className="d-flex justify-content-center">
+                            <button className="btn btn-primary" type="submit">Sign In</button>
+                        </div>
+                    </form>
+                    <p className="text-center">Don't have a user account? <Link href='/signup'>Click here</Link> to sign up!</p>
+                </div>
+        </Loginlayout>
+
+    )
 }

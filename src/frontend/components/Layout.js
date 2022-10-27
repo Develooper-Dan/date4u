@@ -3,7 +3,7 @@ import Footer from './Footer'
 
 export default function Layout({ children }) {
     return (
-        <div className="container">
+        <div className="container main">
             <Navbar />
             <main>{children}</main>
             <Footer />

@@ -1,7 +1,7 @@
 package com.tutego.date4u.jwt;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.tutego.date4u.configuration.UserDetailsServiceConfiguration;
+import com.tutego.date4u.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.util.Collections;
 @Component
 public class JWTFilter extends OncePerRequestFilter {
 
-    @Autowired private UserDetailsServiceConfiguration userDetailsService;
+    @Autowired private UserDetailsServiceImpl userDetailsService;
     @Autowired private JWTUtil jwtUtil;
 
     @Override
@@ -27,26 +27,24 @@ public class JWTFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        if(authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")){
+        if(authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
-            if(jwt == null || jwt.isBlank()){
+            if (jwt == null || jwt.isBlank()) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
-            }else {
-                try{
-
+            } else {
+                try {
                     String email = jwtUtil.validateTokenAndRetrieveSubject(jwt);
                     UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(email, userDetails.getPassword(), Collections.emptyList());
-                    if(SecurityContextHolder.getContext().getAuthentication() == null){
+                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
-                }catch(JWTVerificationException exc){
+                } catch (JWTVerificationException exc) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
                 }
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }
