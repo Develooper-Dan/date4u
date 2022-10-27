@@ -35,19 +35,20 @@ export default function ProfilePhotos(props){
     }
     const returnPhotoUploadForm = () => {
         return(
-            <div>
+            <div className="mt-3">
                 <form onSubmit={handleSubmit(uploadPhoto)}>
                     <div>
+                        <label htmlFor="photo" className="form-label">Add a new photo</label>
                         <input
                             type="file"
                             id="photo"
-                            className="form-control"
+                            className={"form-control mb-2" + (errors.photo ? " is-invalid" : "")}
                             {...register("photo", {required: "Please select a photo"})}
                             accept="image/png, image/jpeg" />
                         <button  type="submit" className="btn btn-primary">
-                            Add photo
+                            Upload
                         </button>
-                        {errors.photo && <p role="alert">{errors.photo?.message}</p>}
+                        {errors.photo && <p className="invalid-feedback" role="alert">{errors.photo?.message}</p>}
                     </div>
                 </form>
             {/* <form onSubmit={handleSubmit(uploadPhoto)}>
@@ -62,7 +63,7 @@ export default function ProfilePhotos(props){
     return (
         <>
             {noPhoto ?
-                <Image src={placeholder} alt="placeholder"/>
+                <Image src={placeholder} alt="placeholder" />
                 :
                 <ProfileCarousel photos={props.photos}/>
             }

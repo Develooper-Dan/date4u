@@ -29,6 +29,11 @@ footer .container-fluid {
   width: min(380px, 100%);
 }
 
+.results{
+  padding-left: .75rem;
+  padding-right: .75rem;
+}
+
 .description{
   min-height: 100px;
 }

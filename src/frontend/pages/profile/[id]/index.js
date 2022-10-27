@@ -3,10 +3,8 @@ import {useRouter} from "next/router";
 import useProfile from "../../../hooks/useProfile";
 import {useEffect} from "react";
 import Cookies from "js-cookie";
-import ProfileCarousel from "../../../components/ProfileCarousel";
 import useUser from "../../../hooks/useUser";
 import Link from "next/link";
-import axios from "axios";
 import ProfilePhotos from "../../../components/ProfilePhotos";
 
 
@@ -30,7 +28,7 @@ export default function Profile(){
                     <div className="jumbotron w-100 mt-2 mb-3">
                         <h1 className="display-4">{profile.nickname}'s profile</h1>
                     </div>
-                    <section className = "row">
+                    <section className = "row mb-3">
                         <div className="col-lg-4">
                             <ProfilePhotos photos={profile?.photos} isProfileOwner={user.profileID === id} />
                         </div>

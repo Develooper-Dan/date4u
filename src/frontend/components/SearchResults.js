@@ -23,17 +23,19 @@ export default function SearchResults({results, switchResultPage}){
 
     return (
         <>
-            <div className="pagination">
+            <div className="pagination d-flex">
                 <h3>
                    Profiles {elementsLowerBound } - {elementsUpperBound } of {totalElements}
                 </h3>
-                <Pagination>
-                    {createPagination()}
-                </Pagination>
+                <div className="ms-auto">
+                    <Pagination>
+                        {createPagination()}
+                    </Pagination>
+                </div>
             </div>
 
             {content.map((profile) =>
-                <Card key={profile.id} style={{ width: " 30%"}} >
+                <Card key={profile.id} style={{ width: " 20%"}} >
                     {profile.profilePhoto ?
                         <Photo filename={profile.profilePhoto.name} />
                         :

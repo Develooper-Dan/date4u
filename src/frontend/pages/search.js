@@ -2,9 +2,8 @@ import Layout from "../components/Layout";
 import Cookies from "js-cookie";
 import {useForm} from "react-hook-form";
 import axios from "axios";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import SearchResults from "../components/SearchResults";
-import {useRouter} from "next/router";
 
 
 
@@ -16,7 +15,7 @@ export default function Search(){
     const hornLengthOptions = [...Array(41).keys()]; // 0 - 40
     const ageOptions = [...Array(82).keys()].map((baseAge) => baseAge + 18 ); // 18 - 99
 
-    const search = (formData, ...addtionalArgs) => {
+    const search = (formData, ...additionalArgs) => {
 
         setSearchRequest(formData);
         let axiosOptions = {
@@ -26,7 +25,7 @@ export default function Search(){
             headers: {"Content-Type": "application/json", "Authorization": "Bearer " + token}
         }
 
-        const queryParams = addtionalArgs.find(obj => obj.query);
+        const queryParams = additionalArgs.find(obj => obj.query);
         if(queryParams){
             axiosOptions.params = queryParams.query;
         }
@@ -41,7 +40,6 @@ export default function Search(){
         }
         })
     }
-
 
     const switchResultPage = (event) => {
         const queryParams = {query:{page: event.target.dataset.page}};
@@ -119,9 +117,15 @@ export default function Search(){
                         <button type="submit" className="btn btn-primary">Search</button>
                     </form>
                 </section>
-                <section className="row results">
+                <section className="row results mb-3">
 
-                    {searchResults ? <SearchResults results={searchResults} switchResultPage={switchResultPage} /> : <p>No results found.</p>}
+                    {searchResults ?
+                        <SearchResults results={searchResults} switchResultPage={switchResultPage}/>
+                        :
+                        <div className="alert alert-info">
+                            <p>No results found.</p>
+                        </div>
+                    }
                 </section>
             </Layout>
     )

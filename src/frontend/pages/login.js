@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Loginlayout from "../components/Loginlayout";
 import { useForm } from "react-hook-form";
-import {useRouter} from "next/router";;
+import {useRouter} from "next/router";
 import Cookies from 'js-cookie'
 import axios from "axios";
 import {useState} from "react";
@@ -38,14 +38,14 @@ export default function Login(){
                 <div className="login-container mb-2">
                     <form onSubmit={handleSubmit(login)} className="mb-2">
                         <div className="mb-2">
-                            <input type="text" className="form-control"
+                            <input type="text" className={"form-control" + (errors.email ? " is-invalid" : "")}
                                    placeholder="Yourfantasy@freeunico.rn"{...register("email", {required: "Email Address is required"})} />
-                            {errors.email && <p role="alert">{errors.email?.message}</p>}
+                            {errors.email && <p className="invalid-feedback" role="alert">{errors.email?.message}</p>}
                         </div>
                         <div className="mb-2">
-                            <input type="password" className="form-control"
+                            <input type="password" className={"form-control" + (errors.password ? " is-invalid" : "")}
                                    placeholder="yoursecret123"{...register("password", {required: "Password is required"})} />
-                            {errors.password && <p role="alert">{errors.password?.message}</p>}
+                            {errors.password && <p className="invalid-feedback" role="alert">{errors.password?.message}</p>}
                         </div>
                         <div >
                             { authError && <p role="alert">{authError}</p> }
