@@ -1,0 +1,523 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "Date4U API",
+    "description" : "API for the Date4U dating app for unicorns",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/DANIELGRIGO/date4U/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "paths" : {
+    "/api/profiles/{id}/photos" : {
+      "post" : {
+        "tags" : [ "Profile" ],
+        "summary" : "POST api/profiles/{id}/photos",
+        "operationId" : "saveImage",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The id of the target profile",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "string",
+                "format" : "binary"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "CREATED",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/{id}" : {
+      "get" : {
+        "tags" : [ "Profile" ],
+        "summary" : "GET api/profiles/{id}",
+        "operationId" : "getProfileData",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The id of the target profile",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Profile"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/api/profiles/{id}/save" : {
+      "post" : {
+        "tags" : [ "Profile" ],
+        "summary" : "POST api/profiles/{id}/save",
+        "description" : "Updates an existing profile in the DB",
+        "operationId" : "saveProfile",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The id of the target profile",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Profile not found",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Nickname already in use",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_400"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/unicorn" : {
+      "get" : {
+        "tags" : [ "Unicorn" ],
+        "summary" : "GET api/unicorn",
+        "operationId" : "authenticatedUnicorn",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Unicorn"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/api/stat/total" : {
+      "get" : {
+        "summary" : "GET api/stat/total",
+        "operationId" : "totalNumberOfRegisteredUnicorns",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "POST api/auth/login",
+        "operationId" : "loginHandler",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth_login_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signup" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "POST api/auth/signup",
+        "operationId" : "signUpHandler",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/quotes" : {
+      "get" : {
+        "summary" : "GET api/quotes",
+        "operationId" : "retrieveQuote",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search" : {
+      "post" : {
+        "summary" : "POST api/search",
+        "operationId" : "search",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "pageSize",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/api/photos/{imagename}" : {
+      "get" : {
+        "summary" : "GET api/photos/{imagename}",
+        "operationId" : "bas64Photo",
+        "parameters" : [ {
+          "name" : "imagename",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stat/last-seen" : {
+      "get" : {
+        "summary" : "GET api/stat/last-seen",
+        "operationId" : "lastSeenStatistics",
+        "parameters" : [ {
+          "name" : "start",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "end",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Profile" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 1
+          },
+          "nickname" : {
+            "maxLength" : 32,
+            "minLength" : 1,
+            "pattern" : "^\\s*",
+            "type" : "string",
+            "example" : "FillmoreFat"
+          },
+          "birthdate" : {
+            "type" : "string",
+            "example" : "1980-08-16"
+          },
+          "hornlength" : {
+            "maximum" : 40,
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 6
+          },
+          "gender" : {
+            "type" : "integer",
+            "example" : 1
+          },
+          "attractedToGender" : {
+            "type" : "integer",
+            "nullable" : true,
+            "example" : 0
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Damn, Eskel... you got an hourglass figure"
+          },
+          "lastseen" : {
+            "type" : "string",
+            "example" : "2022-10-27T11:33:37"
+          },
+          "photos" : {
+            "type" : "array",
+            "example" : [ {
+              "name" : "unicorn038",
+              "profilePhoto" : false
+            }, {
+              "name" : "unicorn052",
+              "profilePhoto" : true
+            } ],
+            "items" : {
+              "$ref" : "#/components/schemas/Profile_photos"
+            }
+          }
+        }
+      },
+      "Unicorn" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 1
+          },
+          "email" : {
+            "type" : "string",
+            "example" : "fillmore.fat@wyman.co"
+          },
+          "profileID" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 1
+          }
+        }
+      },
+      "inline_response_400" : {
+        "type" : "object",
+        "properties" : {
+          "nickname" : {
+            "type" : "string",
+            "example" : "Nickname already taken!"
+          }
+        }
+      },
+      "auth_login_body" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string",
+            "example" : "fillmore.fat@wyman.co"
+          },
+          "password" : {
+            "type" : "string",
+            "format" : "password",
+            "example" : "MySecret123"
+          }
+        }
+      },
+      "inline_response_200" : {
+        "type" : "object",
+        "properties" : {
+          "jwt" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Profile_photos" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "profilePhoto" : {
+            "type" : "boolean"
+          }
+        }
+      }
+    },
+    "responses" : {
+      "UnauthorizedError" : {
+        "description" : "Access token is missing or invalid"
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}
